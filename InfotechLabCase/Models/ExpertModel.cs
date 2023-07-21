@@ -7,30 +7,35 @@ namespace InfotechLabCase.Models
     {
         [Key]
         public int ExpertId { get; set; }
-
-        [ForeignKey("ServiceCategoryModel")]
+        [Required]
         public int ServiceCategoryId { get; set; }
         [Required]
-        public string? ExpertEmail { get; set; }
+        [MaxLength(50)]
+        public string ExpertEmail { get; set; }
         [Required]
-        public string? ExpertPassword { get; set; }
+        [MaxLength(50)]
+        public string ExpertPassword { get; set; }
         [Required]
-        public string? ExpertName { get; set; }
+        [MaxLength(50)]
+        public string ExpertName { get; set; }
         [Required]
-        public string? ExpertSurname { get; set; }
+        [MaxLength(50)]
+        public string ExpertSurname { get; set; }
         [Required]
-        public string? ExpertCity { get; set; }
+        [MaxLength(50)]
+        public string ExpertCity { get; set; }
         [Required]
-        public string? ExpertDistrict { get; set; }
+        [MaxLength(50)]
+        public string ExpertDistrict { get; set; }
         [Required]
-        public string? ExpertNeighbourhood { get; set; }
+        [MaxLength(50)]
+        public string ExpertNeighbourhood { get; set; }
         [Required]
-        public string? ExpertPhone { get; set; }
+        [MaxLength(10)]
+        public string ExpertPhone { get; set; }
+        [Required]
         public DateTime SystemDate { get; set; }
-        public DateTime UpdateSystemDate { get; set; }
+        public DateTime? UpdateSystemDate { get; set; }
         public int IsActive { get; set; }
-
-        public ServiceCategoryModel? ServiceCategoryModel { get; set; }
-        public ICollection<OfferModel>? OfferModels { get; set; }
     }
 }

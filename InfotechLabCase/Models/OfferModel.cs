@@ -8,20 +8,19 @@ namespace InfotechLabCase.Models
     {
         [Key]
         public int OfferId { get; set; }
-
-        [ForeignKey("CustomerModel")]
+        [Required]
         public int CustomerId { get; set; }
-        [ForeignKey("ExpertModel")]
+        [Required]
         public int ExpertId { get; set; }
+        [Required]
         public int OfferStatus { get; set; }
         [Required]
-        public string? OfferMessage { get; set; }
+        [MaxLength(350)]
+        public string OfferMessage { get; set; }
+        [Required]
         public DateTime SystemDate { get; set; }
-        public DateTime UpdateSystemDate { get; set; }
+        public DateTime? UpdateSystemDate { get; set; }
         public int IsActive { get; set; }
-
-        public CustomerModel? CustomerModel { get; set; }
-        public ExpertModel? ExpertModel { get; set; }
 
     }
 }

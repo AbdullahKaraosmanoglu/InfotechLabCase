@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InfotechLabCase.Migrations
 {
     [DbContext(typeof(DbContextInfotechLabCase))]
-    [Migration("20230721135847_Initial Migration")]
-    partial class InitialMigration
+    [Migration("20230721223734_First Migration")]
+    partial class FirstMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,43 +27,51 @@ namespace InfotechLabCase.Migrations
 
             modelBuilder.Entity("InfotechLabCase.Models.CustomerModel", b =>
                 {
-                    b.Property<int>("CustormerId")
+                    b.Property<int>("CustomerId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustormerId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustomerId"));
 
                     b.Property<string>("CustomerCity")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("CustomerDistrict")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("CustomerEmail")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("CustomerName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("CustomerNeighbourhood")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("CustomerPassword")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("CustomerPhone")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<string>("CustomerSurname")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("IsActive")
                         .HasColumnType("int");
@@ -71,10 +79,10 @@ namespace InfotechLabCase.Migrations
                     b.Property<DateTime>("SystemDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("UpdateSystemDate")
+                    b.Property<DateTime?>("UpdateSystemDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("CustormerId");
+                    b.HasKey("CustomerId");
 
                     b.ToTable("TblCustomer");
                 });
@@ -89,35 +97,43 @@ namespace InfotechLabCase.Migrations
 
                     b.Property<string>("ExpertCity")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("ExpertDistrict")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("ExpertEmail")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("ExpertName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("ExpertNeighbourhood")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("ExpertPassword")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("ExpertPhone")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<string>("ExpertSurname")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("IsActive")
                         .HasColumnType("int");
@@ -128,12 +144,10 @@ namespace InfotechLabCase.Migrations
                     b.Property<DateTime>("SystemDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("UpdateSystemDate")
+                    b.Property<DateTime?>("UpdateSystemDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("ExpertId");
-
-                    b.HasIndex("ServiceCategoryId");
 
                     b.ToTable("TblExpert");
                 });
@@ -157,7 +171,8 @@ namespace InfotechLabCase.Migrations
 
                     b.Property<string>("OfferMessage")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(350)
+                        .HasColumnType("nvarchar(350)");
 
                     b.Property<int>("OfferStatus")
                         .HasColumnType("int");
@@ -165,14 +180,10 @@ namespace InfotechLabCase.Migrations
                     b.Property<DateTime>("SystemDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("UpdateSystemDate")
+                    b.Property<DateTime?>("UpdateSystemDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("OfferId");
-
-                    b.HasIndex("CustomerId");
-
-                    b.HasIndex("ExpertId");
 
                     b.ToTable("TblOffer");
                 });
@@ -187,7 +198,8 @@ namespace InfotechLabCase.Migrations
 
                     b.Property<string>("ServiceCategoryName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("ServicePrice")
                         .HasColumnType("int");
@@ -195,54 +207,12 @@ namespace InfotechLabCase.Migrations
                     b.Property<DateTime>("SystemDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime?>("UpdateSystemDate")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("ServiceCategoryId");
 
                     b.ToTable("TblServiceCategory");
-                });
-
-            modelBuilder.Entity("InfotechLabCase.Models.ExpertModel", b =>
-                {
-                    b.HasOne("InfotechLabCase.Models.ServiceCategoryModel", "ServiceCategoryModel")
-                        .WithMany("ExpertModels")
-                        .HasForeignKey("ServiceCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ServiceCategoryModel");
-                });
-
-            modelBuilder.Entity("InfotechLabCase.Models.OfferModel", b =>
-                {
-                    b.HasOne("InfotechLabCase.Models.CustomerModel", "CustomerModel")
-                        .WithMany("OfferModels")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("InfotechLabCase.Models.ExpertModel", "ExpertModel")
-                        .WithMany("OfferModels")
-                        .HasForeignKey("ExpertId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CustomerModel");
-
-                    b.Navigation("ExpertModel");
-                });
-
-            modelBuilder.Entity("InfotechLabCase.Models.CustomerModel", b =>
-                {
-                    b.Navigation("OfferModels");
-                });
-
-            modelBuilder.Entity("InfotechLabCase.Models.ExpertModel", b =>
-                {
-                    b.Navigation("OfferModels");
-                });
-
-            modelBuilder.Entity("InfotechLabCase.Models.ServiceCategoryModel", b =>
-                {
-                    b.Navigation("ExpertModels");
                 });
 #pragma warning restore 612, 618
         }
