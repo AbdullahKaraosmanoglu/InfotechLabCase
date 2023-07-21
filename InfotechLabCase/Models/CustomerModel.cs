@@ -6,15 +6,25 @@ namespace InfotechLabCase.Models
     {
         [Key]
         public int CustormerId { get; set; }
-        public string CustomerEmail { get; set; }
-        public string CustomerPassword { get; set; }
-        public string CustomerName { get; set; }
-        public string CustomerSurname { get; set; }
-        public string CustomerCity { get; set; }
-        public string CustomerDistrict { get; set; }
-        public string CustomerNeighbourhood { get; set; }
-        public long CustomerPhone { get; set; }
-        public DateTime CustomerTranDate { get; set; }
+        [Required]
+        public string? CustomerEmail { get; set; }
+        [Required]
+        public string? CustomerPassword { get; set; }
+        [Required]
+        public string? CustomerName { get; set; }
+        [Required]
+        public string? CustomerSurname { get; set; }
+        [Required]
+        public string? CustomerCity { get; set; }
+        [Required]
+        public string? CustomerDistrict { get; set; }
+        [Required]
+        public string? CustomerNeighbourhood { get; set; }
+        [Required]
+        public string? CustomerPhone { get; set; }
+        public DateTime SystemDate { get; set; }
+        public DateTime UpdateSystemDate { get; set; }
         public int IsActive { get; set; }
+        public ICollection<OfferModel>? OfferModels { get; set; }
     }
 }

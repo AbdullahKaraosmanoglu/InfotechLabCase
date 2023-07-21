@@ -12,7 +12,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<DbContextInfotechLabCase>(options => options.UseInMemoryDatabase("DbInfotechLabCase"));
+//builder.Services.AddDbContext<DbContextInfotechLabCase>(options => options.UseInMemoryDatabase("DbInfotechLabCase"));
 
 var app = builder.Build();
 

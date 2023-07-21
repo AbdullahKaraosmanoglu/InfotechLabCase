@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace InfotechLabCase.Models
 {
@@ -6,16 +7,30 @@ namespace InfotechLabCase.Models
     {
         [Key]
         public int ExpertId { get; set; }
-        public int ExpertCategoryId { get; set; }
-        public string ExpertEmail { get; set; }
-        public string ExpertPassword { get; set; }
-        public string ExpertName { get; set; }
-        public string ExpertSurname { get; set; }
-        public string ExpertCity { get; set; }
-        public string ExpertDistrict { get; set; }
-        public string ExpertNeighbourhood { get; set; }
-        public long ExpertPhone { get; set; }
-        public DateTime ExpertTranDate { get; set; }
+
+        [ForeignKey("ServiceCategoryModel")]
+        public int ServiceCategoryId { get; set; }
+        [Required]
+        public string? ExpertEmail { get; set; }
+        [Required]
+        public string? ExpertPassword { get; set; }
+        [Required]
+        public string? ExpertName { get; set; }
+        [Required]
+        public string? ExpertSurname { get; set; }
+        [Required]
+        public string? ExpertCity { get; set; }
+        [Required]
+        public string? ExpertDistrict { get; set; }
+        [Required]
+        public string? ExpertNeighbourhood { get; set; }
+        [Required]
+        public string? ExpertPhone { get; set; }
+        public DateTime SystemDate { get; set; }
+        public DateTime UpdateSystemDate { get; set; }
         public int IsActive { get; set; }
+
+        public ServiceCategoryModel? ServiceCategoryModel { get; set; }
+        public ICollection<OfferModel>? OfferModels { get; set; }
     }
 }

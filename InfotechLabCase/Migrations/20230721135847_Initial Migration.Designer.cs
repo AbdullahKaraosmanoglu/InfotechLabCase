@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InfotechLabCase.Migrations
 {
     [DbContext(typeof(DbContextInfotechLabCase))]
-    [Migration("20230720130027_Initial")]
-    partial class Initial
+    [Migration("20230721135847_Initial Migration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -57,18 +57,22 @@ namespace InfotechLabCase.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("CustomerPhone")
-                        .HasColumnType("bigint");
+                    b.Property<string>("CustomerPhone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CustomerSurname")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("CustomerTranDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("IsActive")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("SystemDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("UpdateSystemDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("CustormerId");
 
@@ -82,9 +86,6 @@ namespace InfotechLabCase.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ExpertId"));
-
-                    b.Property<int>("ExpertCategoryId")
-                        .HasColumnType("int");
 
                     b.Property<string>("ExpertCity")
                         .IsRequired()
@@ -110,20 +111,29 @@ namespace InfotechLabCase.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("ExpertPhone")
-                        .HasColumnType("bigint");
+                    b.Property<string>("ExpertPhone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ExpertSurname")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("ExpertTranDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("IsActive")
                         .HasColumnType("int");
 
+                    b.Property<int>("ServiceCategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("SystemDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("UpdateSystemDate")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("ExpertId");
+
+                    b.HasIndex("ServiceCategoryId");
 
                     b.ToTable("TblExpert");
                 });
@@ -142,6 +152,9 @@ namespace InfotechLabCase.Migrations
                     b.Property<int>("ExpertId")
                         .HasColumnType("int");
 
+                    b.Property<int>("IsActive")
+                        .HasColumnType("int");
+
                     b.Property<string>("OfferMessage")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -149,13 +162,17 @@ namespace InfotechLabCase.Migrations
                     b.Property<int>("OfferStatus")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("OfferTranDate")
+                    b.Property<DateTime>("SystemDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ServiceCategoryId")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("UpdateSystemDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("OfferId");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("ExpertId");
 
                     b.ToTable("TblOffer");
                 });
@@ -175,9 +192,57 @@ namespace InfotechLabCase.Migrations
                     b.Property<int>("ServicePrice")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("SystemDate")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("ServiceCategoryId");
 
                     b.ToTable("TblServiceCategory");
+                });
+
+            modelBuilder.Entity("InfotechLabCase.Models.ExpertModel", b =>
+                {
+                    b.HasOne("InfotechLabCase.Models.ServiceCategoryModel", "ServiceCategoryModel")
+                        .WithMany("ExpertModels")
+                        .HasForeignKey("ServiceCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ServiceCategoryModel");
+                });
+
+            modelBuilder.Entity("InfotechLabCase.Models.OfferModel", b =>
+                {
+                    b.HasOne("InfotechLabCase.Models.CustomerModel", "CustomerModel")
+                        .WithMany("OfferModels")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("InfotechLabCase.Models.ExpertModel", "ExpertModel")
+                        .WithMany("OfferModels")
+                        .HasForeignKey("ExpertId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CustomerModel");
+
+                    b.Navigation("ExpertModel");
+                });
+
+            modelBuilder.Entity("InfotechLabCase.Models.CustomerModel", b =>
+                {
+                    b.Navigation("OfferModels");
+                });
+
+            modelBuilder.Entity("InfotechLabCase.Models.ExpertModel", b =>
+                {
+                    b.Navigation("OfferModels");
+                });
+
+            modelBuilder.Entity("InfotechLabCase.Models.ServiceCategoryModel", b =>
+                {
+                    b.Navigation("ExpertModels");
                 });
 #pragma warning restore 612, 618
         }
