@@ -7,7 +7,10 @@ namespace InfotechLabCase.Models
         [Key]
         public int CustomerId { get; set; }
         [Required]
+        public int RoleId { get; set; }
+        [Required]
         [MaxLength(50)]
+
         public string CustomerEmail { get; set; }
         [Required]
         [MaxLength(50)]

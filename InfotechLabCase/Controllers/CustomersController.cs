@@ -108,5 +108,19 @@ namespace InfotechLabCase.Controllers
 
             return Ok();
         }
+
+        [HttpPost("{customerModel}")]
+        public async Task<IActionResult> CustomerLoginByCustomerEmailAndCustomerPassword([FromBody] CustomerModel customerModel)
+        {
+            var customerEmail = await dbContextInfotechLabCase.TblCustomer.FirstOrDefaultAsync(x=>x.CustomerEmail==customerModel.CustomerEmail);
+            var customerPassword = await dbContextInfotechLabCase.TblCustomer.FirstOrDefaultAsync(x=>x.CustomerPassword==customerModel.CustomerPassword);
+
+            if (customerEmail==null||customerPassword==null)
+            {
+                return Unauthorized();
+            }
+
+            return Ok();
+        }
     }
 }

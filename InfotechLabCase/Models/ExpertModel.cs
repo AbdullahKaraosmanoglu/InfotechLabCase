@@ -8,6 +8,8 @@ namespace InfotechLabCase.Models
         [Key]
         public int ExpertId { get; set; }
         [Required]
+        public int RoleId { get; set; }
+        [Required]
         public int ServiceCategoryId { get; set; }
         [Required]
         [MaxLength(50)]

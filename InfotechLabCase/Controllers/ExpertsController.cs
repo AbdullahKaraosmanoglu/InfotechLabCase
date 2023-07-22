@@ -32,15 +32,15 @@ namespace InfotechLabCase.Controllers
         {
             if (dbContextInfotechLabCase.TblExpert == null)
             {
-                return NotFound();
+                return NotFound(new { Message = "Veritabanında kayıt bulunamadı" });
             }
             var expert = await dbContextInfotechLabCase.TblExpert.FindAsync(expertId);
 
             if (expert == null)
             {
-                return NotFound();
+                return NotFound(new {Message="Usta yok"});
             }
-            return expert;
+            return Ok(new {  Message = BaseClass.LoginSuccessfuly, ResponseData=expert} );
         }
 
         [HttpPost]
@@ -99,10 +99,23 @@ namespace InfotechLabCase.Controllers
             {
                 return NotFound();
             }
-
-            dbContextInfotechLabCase.Remove(expert);
+            expert.IsActive = BaseClass.IsActive.Passive.GetHashCode();
 
             await dbContextInfotechLabCase.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [HttpPost("{expertModel}")]
+        public async Task<IActionResult> ExpertLoginByExpertEmailAndExpertPassword([FromBody] ExpertModel expertModel)
+        {
+            var expertEmail = await dbContextInfotechLabCase.TblExpert.FirstOrDefaultAsync(x => x.ExpertEmail == expertModel.ExpertEmail);
+            var expertPassword = await dbContextInfotechLabCase.TblExpert.FirstOrDefaultAsync(x => x.ExpertPassword == expertModel.ExpertPassword);
+
+            if (expertEmail == null || expertPassword == null)
+            {
+                return Unauthorized();
+            }
 
             return Ok();
         }
