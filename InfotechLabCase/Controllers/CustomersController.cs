@@ -10,7 +10,7 @@ namespace InfotechLabCase.Controllers
     public class CustomersController : Controller
     {
         private readonly DbContextInfotechLabCase dbContextInfotechLabCase;
-        
+
         public CustomersController(DbContextInfotechLabCase context)
         {
             this.dbContextInfotechLabCase = context;
@@ -19,10 +19,11 @@ namespace InfotechLabCase.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CustomerModel>>> GetCustomers()
         {
-            if (dbContextInfotechLabCase.TblCustomer==null)
+            if (dbContextInfotechLabCase.TblCustomer == null)
             {
                 return NotFound();
             }
+
             return await dbContextInfotechLabCase.TblCustomer.ToListAsync();
         }
 
@@ -30,13 +31,13 @@ namespace InfotechLabCase.Controllers
         [Route("{customerId:int}")]
         public async Task<ActionResult<CustomerModel>> GetCustomerByCustomerId(int customerId)
         {
-            if (dbContextInfotechLabCase.TblCustomer==null)
+            if (dbContextInfotechLabCase.TblCustomer == null)
             {
                 return NotFound();
             }
             var customer = await dbContextInfotechLabCase.TblCustomer.FindAsync(customerId);
 
-            if (customer==null)
+            if (customer == null)
             {
                 return NotFound();
             }
@@ -44,13 +45,68 @@ namespace InfotechLabCase.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<CustomerModel>> CreateCustomer(CustomerModel customer)
+        public async Task<ActionResult<CustomerModel>> CreateCustomer(CustomerModel customerModel)
         {
-            dbContextInfotechLabCase.TblCustomer.Add(customer);
+
+            dbContextInfotechLabCase.TblCustomer.Add(customerModel);
             await dbContextInfotechLabCase.SaveChangesAsync();
 
-            return Ok(customer);
-            
+            return Ok(customerModel);
+
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateCustomerByCustomerId(int customerId, CustomerModel customerModel)
+        {
+            if (customerId != customerModel.CustomerId)
+            {
+                return BadRequest();
+            }
+            dbContextInfotechLabCase.Entry(customerModel).State = EntityState.Modified;
+
+            try
+            {
+                await dbContextInfotechLabCase.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!CustomerAvailable(customerId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return Ok();
+        }
+
+        private bool CustomerAvailable(int customerId)
+        {
+            return (dbContextInfotechLabCase.TblCustomer?.Any(x => x.CustomerId == customerId)).GetValueOrDefault();
+        }
+
+        [HttpDelete("{customerId}")]
+        public async Task<IActionResult> DeleteCustomerByCustomerId(int customerId)
+        {
+            if (dbContextInfotechLabCase.TblCustomer == null)
+            {
+                return NotFound();
+            }
+
+            var customer = await dbContextInfotechLabCase.TblCustomer.FindAsync(customerId);
+
+            if (customer == null)
+            {
+                return NotFound();
+            }
+
+            dbContextInfotechLabCase.Remove(customer);
+
+            await dbContextInfotechLabCase.SaveChangesAsync();
+
+            return Ok();
         }
     }
 }
