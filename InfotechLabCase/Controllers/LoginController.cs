@@ -21,35 +21,47 @@ namespace InfotechLabCase.Controllers
         {
             if (dbContextInfotechLabCase.TblCustomer == null)
             {
-                return NotFound();
+                return NotFound(new { Message = BaseClass.DataEntryNotFoundForCustomer });
             }
             var customerList = await dbContextInfotechLabCase.TblCustomer.ToListAsync();
             var customer = customerList.Where(
                 x => x.CustomerEmail == email && x.CustomerPassword == password && x.IsActive == BaseClass.IsActive.Active.GetHashCode()).FirstOrDefault();
             if (customer != null)
             {
-                return Ok(new { Message= BaseClass.LoginSuccessfuly,ResponseData= customer });
+                return Ok(new { Message = BaseClass.LoginSuccess, ResponseData = customer });
             }
 
             if (dbContextInfotechLabCase.TblExpert == null)
             {
-                return NotFound();
+                return NotFound(new { Message = BaseClass.DataEntryNotFoundForExpert });
             }
 
             var expertList = await dbContextInfotechLabCase.TblExpert.ToListAsync();
             var expert = expertList.Where(
-                x => x.ExpertEmail == email && x.ExpertPassword == password&& x.IsActive==BaseClass.IsActive.Active.GetHashCode()).FirstOrDefault();
+                x => x.ExpertEmail == email && x.ExpertPassword == password && x.IsActive == BaseClass.IsActive.Active.GetHashCode()).FirstOrDefault();
 
             if (expert != null)
             {
-                return Ok(expert);
+                return Ok(new { Message = BaseClass.LoginSuccess, ResponseData = expert });
             }
 
-            return Ok(new { Message = BaseClass.UserNotFound });
+            if (dbContextInfotechLabCase.TblAdmin == null)
+            {
+                return NotFound(new { Message = BaseClass.DataEntryNotFoundForExpert });
+            }
+
+            var adminList = await dbContextInfotechLabCase.TblAdmin.ToListAsync();
+            var admin = adminList.Where(
+                x => x.AdminEmail == email && x.AdminPassword == password && x.IsActive == BaseClass.IsActive.Active.GetHashCode()).FirstOrDefault();
+
+            if (admin!=null)
+            {
+                return Ok(new { Message = BaseClass.LoginSuccess, ResponseData = admin });
+            }
+
+            return Ok(new { Message = BaseClass.LoginFailed });
 
 
         }
-
-
     }
 }

@@ -20,7 +20,7 @@ namespace InfotechLabCase.Controllers
         {
             if (dbContextInfotechLabCase.TblExpert == null)
             {
-                return NotFound();
+                return NotFound(new { Message = BaseClass.DataEntryNotFoundForExpert });
             }
 
             return await dbContextInfotechLabCase.TblExpert.ToListAsync();
@@ -32,15 +32,15 @@ namespace InfotechLabCase.Controllers
         {
             if (dbContextInfotechLabCase.TblExpert == null)
             {
-                return NotFound(new { Message = "Veritabanında kayıt bulunamadı" });
+                return NotFound(new { Message = BaseClass.DataEntryNotFoundForExpert });
             }
             var expert = await dbContextInfotechLabCase.TblExpert.FindAsync(expertId);
 
             if (expert == null)
             {
-                return NotFound(new {Message="Usta yok"});
+                return NotFound(new { Message = BaseClass.DataEntryNotFoundForExpertId });
             }
-            return Ok(new {  Message = BaseClass.LoginSuccessfuly, ResponseData=expert} );
+            return Ok(new { Message = BaseClass.ProfileFound, ResponseData = expert });
         }
 
         [HttpPost]
@@ -58,7 +58,7 @@ namespace InfotechLabCase.Controllers
         {
             if (expertId != expertModel.ExpertId)
             {
-                return BadRequest();
+                return BadRequest(new { Message = BaseClass.BadRequest });
             }
             dbContextInfotechLabCase.Entry(expertModel).State = EntityState.Modified;
 
@@ -70,14 +70,14 @@ namespace InfotechLabCase.Controllers
             {
                 if (!ExpertAvailable(expertId))
                 {
-                    return NotFound();
+                    return NotFound(new { Message = BaseClass.DataEntryNotFoundForExpertId });
                 }
                 else
                 {
                     throw;
                 }
             }
-            return Ok();
+            return Ok(new { Message = BaseClass.UpdateProfileSuccess });
         }
 
         private bool ExpertAvailable(int expertId)
@@ -90,34 +90,20 @@ namespace InfotechLabCase.Controllers
         {
             if (dbContextInfotechLabCase.TblExpert == null)
             {
-                return NotFound();
+                return NotFound(new { Message = BaseClass.DataEntryNotFoundForExpert });
             }
 
             var expert = await dbContextInfotechLabCase.TblExpert.FindAsync(expertId);
 
             if (expert == null)
             {
-                return NotFound();
+                return NotFound(new { Message = BaseClass.DataEntryNotFoundForExpertId });
             }
             expert.IsActive = BaseClass.IsActive.Passive.GetHashCode();
 
             await dbContextInfotechLabCase.SaveChangesAsync();
 
-            return Ok();
-        }
-
-        [HttpPost("{expertModel}")]
-        public async Task<IActionResult> ExpertLoginByExpertEmailAndExpertPassword([FromBody] ExpertModel expertModel)
-        {
-            var expertEmail = await dbContextInfotechLabCase.TblExpert.FirstOrDefaultAsync(x => x.ExpertEmail == expertModel.ExpertEmail);
-            var expertPassword = await dbContextInfotechLabCase.TblExpert.FirstOrDefaultAsync(x => x.ExpertPassword == expertModel.ExpertPassword);
-
-            if (expertEmail == null || expertPassword == null)
-            {
-                return Unauthorized();
-            }
-
-            return Ok();
+            return Ok(new { Message = BaseClass.DeleteProfileSuccess });
         }
     }
 }

@@ -10,9 +10,11 @@ namespace InfotechLabCase.Data
 
         }
 
+        public DbSet<AdminModel> TblAdmin { get; set; }
         public DbSet<ExpertModel> TblExpert { get; set; }
         public DbSet<CustomerModel> TblCustomer { get; set; }
         public DbSet<OfferModel> TblOffer { get; set; }
         public DbSet<ServiceCategoryModel> TblServiceCategory { get; set; }
+
     }
 }

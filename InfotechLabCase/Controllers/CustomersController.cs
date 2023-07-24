@@ -21,7 +21,7 @@ namespace InfotechLabCase.Controllers
         {
             if (dbContextInfotechLabCase.TblCustomer == null)
             {
-                return NotFound();
+                return NotFound(new { Message = BaseClass.DataEntryNotFoundForCustomer });
             }
 
             return await dbContextInfotechLabCase.TblCustomer.ToListAsync();
@@ -33,15 +33,15 @@ namespace InfotechLabCase.Controllers
         {
             if (dbContextInfotechLabCase.TblCustomer == null)
             {
-                return NotFound();
+                return NotFound(new { Message = BaseClass.DataEntryNotFoundForCustomer });
             }
             var customer = await dbContextInfotechLabCase.TblCustomer.FindAsync(customerId);
 
             if (customer == null)
             {
-                return NotFound();
+                return NotFound(new { Message = BaseClass.DataEntryNotFoundForCustomerId });
             }
-            return customer;
+            return Ok(new { Message = BaseClass.ProfileFound, ResponseData = customer });
         }
 
         [HttpPost]
@@ -60,7 +60,7 @@ namespace InfotechLabCase.Controllers
         {
             if (customerId != customerModel.CustomerId)
             {
-                return BadRequest();
+                return BadRequest(new { Message = BaseClass.BadRequest });
             }
             dbContextInfotechLabCase.Entry(customerModel).State = EntityState.Modified;
 
@@ -72,14 +72,14 @@ namespace InfotechLabCase.Controllers
             {
                 if (!CustomerAvailable(customerId))
                 {
-                    return NotFound();
+                    return NotFound(new { Message = BaseClass.DataEntryNotFoundForCustomerId });
                 }
                 else
                 {
                     throw;
                 }
             }
-            return Ok();
+            return Ok(new { Message = BaseClass.UpdateProfileSuccess });
         }
 
         private bool CustomerAvailable(int customerId)
@@ -92,35 +92,21 @@ namespace InfotechLabCase.Controllers
         {
             if (dbContextInfotechLabCase.TblCustomer == null)
             {
-                return NotFound();
+                return NotFound(new { Message = BaseClass.DataEntryNotFoundForCustomer });
             }
 
             var customer = await dbContextInfotechLabCase.TblCustomer.FindAsync(customerId);
 
             if (customer == null)
             {
-                return NotFound();
+                return NotFound(new { Message = BaseClass.DataEntryNotFoundForCustomerId });
             }
 
-            dbContextInfotechLabCase.Remove(customer);
+            customer.IsActive = BaseClass.IsActive.Passive.GetHashCode();
 
             await dbContextInfotechLabCase.SaveChangesAsync();
 
-            return Ok();
-        }
-
-        [HttpPost("{customerModel}")]
-        public async Task<IActionResult> CustomerLoginByCustomerEmailAndCustomerPassword([FromBody] CustomerModel customerModel)
-        {
-            var customerEmail = await dbContextInfotechLabCase.TblCustomer.FirstOrDefaultAsync(x=>x.CustomerEmail==customerModel.CustomerEmail);
-            var customerPassword = await dbContextInfotechLabCase.TblCustomer.FirstOrDefaultAsync(x=>x.CustomerPassword==customerModel.CustomerPassword);
-
-            if (customerEmail==null||customerPassword==null)
-            {
-                return Unauthorized();
-            }
-
-            return Ok();
+            return Ok(new { Message = BaseClass.DeleteProfileSuccess });
         }
     }
 }
