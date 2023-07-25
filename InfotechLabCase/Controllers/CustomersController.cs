@@ -45,7 +45,7 @@ namespace InfotechLabCase.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<CustomerModel>> CreateCustomer(CustomerModel customerModel)
+        public async Task<ActionResult<CustomerModel>> CreateCustomer([FromBody] CustomerModel customerModel)
         {
 
             dbContextInfotechLabCase.TblCustomer.Add(customerModel);

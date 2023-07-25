@@ -1,4 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace InfotechLabCase.Models
 {
@@ -7,14 +10,9 @@ namespace InfotechLabCase.Models
         [Key]
         public int CustomerId { get; set; }
         [Required]
+        public int UserId { get; set; }
+        [Required]
         public int RoleId { get; set; }
-        [Required]
-        [MaxLength(50)]
-
-        public string CustomerEmail { get; set; }
-        [Required]
-        [MaxLength(50)]
-        public string CustomerPassword { get; set; }
         [Required]
         [MaxLength(50)]
         public string CustomerName { get; set; }
@@ -33,6 +31,9 @@ namespace InfotechLabCase.Models
         [Required]
         [MaxLength(10)]
         public string CustomerPhone { get; set; }
+        [Required]
+        [MaxLength(10)]
+        public string CustomerPostCode { get; set; }
         [Required]
         public DateTime SystemDate { get; set; }
         public DateTime? UpdateSystemDate { get; set; }

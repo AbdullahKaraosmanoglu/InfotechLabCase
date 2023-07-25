@@ -4,6 +4,7 @@ using InfotechLabCase.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InfotechLabCase.Migrations
 {
     [DbContext(typeof(DbContextInfotechLabCase))]
-    partial class DbContextInfotechLabCaseModelSnapshot : ModelSnapshot
+    [Migration("20230724205809_Admin1 migration")]
+    partial class Admin1migration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -67,23 +70,6 @@ namespace InfotechLabCase.Migrations
                     b.ToTable("TblAdmin");
                 });
 
-            modelBuilder.Entity("InfotechLabCase.Models.CityModel", b =>
-                {
-                    b.Property<int>("CityId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CityId"));
-
-                    b.Property<string>("CityName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("CityId");
-
-                    b.ToTable("TblCity");
-                });
-
             modelBuilder.Entity("InfotechLabCase.Models.CustomerModel", b =>
                 {
                     b.Property<int>("CustomerId")
@@ -102,6 +88,11 @@ namespace InfotechLabCase.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("CustomerEmail")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<string>("CustomerName")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -112,12 +103,12 @@ namespace InfotechLabCase.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("CustomerPhone")
+                    b.Property<string>("CustomerPassword")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("CustomerPostCode")
+                    b.Property<string>("CustomerPhone")
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
@@ -139,62 +130,9 @@ namespace InfotechLabCase.Migrations
                     b.Property<DateTime?>("UpdateSystemDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("CustomerId");
 
                     b.ToTable("TblCustomer");
-                });
-
-            modelBuilder.Entity("InfotechLabCase.Models.DistrictModel", b =>
-                {
-                    b.Property<int>("DistrictId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DistrictId"));
-
-                    b.Property<int>("CityId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("DistrictName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("DistrictId");
-
-                    b.ToTable("TblDistrict");
-                });
-
-            modelBuilder.Entity("InfotechLabCase.Models.ExpertCommentModel", b =>
-                {
-                    b.Property<int>("ExpertCommentId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ExpertCommentId"));
-
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ExpertComment")
-                        .IsRequired()
-                        .HasMaxLength(350)
-                        .HasColumnType("nvarchar(350)");
-
-                    b.Property<int>("ExpertId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("SystemDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("UpdateSystemDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("ExpertCommentId");
-
-                    b.ToTable("TblExpertComment");
                 });
 
             modelBuilder.Entity("InfotechLabCase.Models.ExpertModel", b =>
@@ -215,12 +153,22 @@ namespace InfotechLabCase.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("ExpertEmail")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<string>("ExpertName")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("ExpertNeighbourhood")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("ExpertPassword")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
@@ -250,32 +198,9 @@ namespace InfotechLabCase.Migrations
                     b.Property<DateTime?>("UpdateSystemDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("ExpertId");
 
                     b.ToTable("TblExpert");
-                });
-
-            modelBuilder.Entity("InfotechLabCase.Models.NeighbourhoodModel", b =>
-                {
-                    b.Property<int>("NeighbourhoodId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("NeighbourhoodId"));
-
-                    b.Property<int>("DistrictId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("NeighbourhoodName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("NeighbourhoodId");
-
-                    b.ToTable("TblNeighbourhood");
                 });
 
             modelBuilder.Entity("InfotechLabCase.Models.OfferModel", b =>
@@ -314,23 +239,6 @@ namespace InfotechLabCase.Migrations
                     b.ToTable("TblOffer");
                 });
 
-            modelBuilder.Entity("InfotechLabCase.Models.RoleModel", b =>
-                {
-                    b.Property<int>("RoleId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RoleId"));
-
-                    b.Property<string>("RoleName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("RoleId");
-
-                    b.ToTable("TblRole");
-                });
-
             modelBuilder.Entity("InfotechLabCase.Models.ServiceCategoryModel", b =>
                 {
                     b.Property<int>("ServiceCategoryId")
@@ -356,38 +264,6 @@ namespace InfotechLabCase.Migrations
                     b.HasKey("ServiceCategoryId");
 
                     b.ToTable("TblServiceCategory");
-                });
-
-            modelBuilder.Entity("InfotechLabCase.Models.UserModel", b =>
-                {
-                    b.Property<int>("UserId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int>("IsActive")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<DateTime>("SystemDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("UpdateSystemDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("UserId");
-
-                    b.ToTable("TblUser");
                 });
 #pragma warning restore 612, 618
         }

@@ -6,6 +6,7 @@ namespace InfotechLabCase.Models
 {
     public class OfferModel
     {
+
         [Key]
         public int OfferId { get; set; }
         [Required]

@@ -21,21 +21,35 @@ namespace InfotechLabCase.Controllers
             if (offerModel != null)
             {
                 await dbContextInfotechLabCase.TblOffer.AddAsync(offerModel);
+                await dbContextInfotechLabCase.SaveChangesAsync();
                 return Ok(new { Message = BaseClass.SendingOffer, ResponseData = offerModel });
             }
-            return BadRequest(new {Message=BaseClass.BadRequest});
+            return BadRequest(new { Message = BaseClass.BadRequest });
         }
 
         [HttpGet]
-        [Route("{customerID:int}")]
+        [Route("customer/{customerID:int}")]
         public async Task<ActionResult<List<OfferModel>>> GetOffersByCustomerId(int customerID)
         {
-            var offer = await dbContextInfotechLabCase.TblOffer.Where(x => x.CustomerId == customerID).ToListAsync();
-            if (offer == null)
+            var offers = await dbContextInfotechLabCase.TblOffer.Where(x => x.CustomerId == customerID).ToListAsync();
+            if (offers.Count == 0)
             {
                 return NotFound(new { Message = BaseClass.DataEntryNotFoundOfferWithCustomerId });
             }
             return Ok(new { Message = BaseClass.GetOffersForCustomerId, ResponseData = customerID });
+        }
+
+
+        [HttpGet]
+        [Route("expert/{expertID:int}")]
+        public async Task<ActionResult<List<OfferModel>>> GetOffersByExpertId(int expertID)
+        {
+            var offers = await dbContextInfotechLabCase.TblOffer.Where(x => x.ExpertId == expertID).ToListAsync();
+            if (offers.Count == 0)
+            {
+                return NotFound(new { Message = BaseClass.DataEntryNotFoundOfferWithExpertId });
+            }
+            return Ok(new { Message = BaseClass.GetOffersForExpertId, ResponseData = expertID });
         }
     }
 }

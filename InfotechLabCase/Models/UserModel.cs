@@ -1,20 +1,20 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace InfotechLabCase.Models
 {
-    public class ServiceCategoryModel
+    public class UserModel
     {
         [Key]
-        public int ServiceCategoryId { get; set; }
+        public int UserId { get; set; }
         [Required]
         [MaxLength(50)]
-        public string ServiceCategoryName { get; set; }
+        public string Email { get; set; }
         [Required]
-        public int ServicePrice { get; set; }
+        [MaxLength(50)]
+        public string Password { get; set; }
         [Required]
         public DateTime SystemDate { get; set; }
         public DateTime? UpdateSystemDate { get; set; }
-       
+        public int IsActive { get; set; }
     }
 }

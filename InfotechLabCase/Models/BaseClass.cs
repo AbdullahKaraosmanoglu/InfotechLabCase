@@ -5,7 +5,7 @@
 
         #region Consts
         public const string LoginSuccess = "Giriş Başarılı.";
-        public const string LoginFailed= "Kayıtlı Profil Bulunamadı Kayıt Olarak Devam Ediniz.";
+        public const string LoginFailed = "Kayıtlı Profil Bulunamadı Kayıt Olarak Devam Ediniz.";
         public const string ProfileFound = "Profile Bilgileri Getirildi.";
         public const string UpdateProfileSuccess = "Profil Bilgileri Başarılı Bir Şekilde Güncellenmiştir.";
         public const string DeleteProfileSuccess = "Profil Bilgileri Başarılı Bir Şekilde Silinmiştir.";
@@ -17,6 +17,8 @@
         public const string SendingOffer = " Teklif Başarılı Bir Şekilde Gönderildi Ustamız En Kısa Zamanda Geri Dönüş Sağlayacaktır";
         public const string DataEntryNotFoundOfferWithCustomerId = " Müşteriye Ait Teklif Formu Bulunamadı.";
         public const string GetOffersForCustomerId = " Müşteriye Ait Teklif FormLarı Getirildi.";
+        public const string DataEntryNotFoundOfferWithExpertId = " Ustaya Ait Teklif Formu Bulunamadı.";
+        public const string GetOffersForExpertId = " Ustaya Ait Teklif FormLarı Getirildi.";
         #endregion
 
         #region Enums
@@ -25,11 +27,16 @@
             /// <summary>
             /// Usta
             /// </summary>
-            Expert=1,
+            Expert = 1,
             /// <summary>
             /// Müşteri
             /// </summary>
-            Customer=2
+            Customer = 2,
+            /// <summary>
+            /// Admin
+            /// </summary>
+            Admin = 3
+
         }
 
         public enum IsActive

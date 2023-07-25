@@ -6,11 +6,8 @@ namespace InfotechLabCase.Models
     {
         [Key]
         public int AdminId { get; set; }
-        public int ExpertId { get; set; }
-        public int CustomerId { get; set; }
-        public int OfferId { get; set; }
+        [Required]
         public int RoleId { get; set; }
-        public int ServiceCategoryId { get; set; }
         [Required]
         [MaxLength(50)]
         public string AdminEmail { get; set; }

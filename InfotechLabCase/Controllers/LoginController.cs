@@ -17,51 +17,48 @@ namespace InfotechLabCase.Controllers
         }
 
         [HttpPost]
+        [Route("Register/")]
+        public async Task<ActionResult> Register(UserModel userModel)
+        {
+            var user = await dbContextInfotechLabCase.TblUser.Where(
+                x => x.Email == userModel.Email && x.IsActive == BaseClass.IsActive.Active.GetHashCode()).FirstOrDefaultAsync();
+            if (user != null)
+            {
+                return Ok("kullanıcı var");
+            }
+
+            dbContextInfotechLabCase.Entry(userModel).State = EntityState.Added;
+            await dbContextInfotechLabCase.SaveChangesAsync();
+
+            return Ok(new { Message = "kayıt edildi", ResponseData = userModel });
+
+
+
+        }
+
+        [HttpPost]
+        [Route("Login/")]
         public async Task<ActionResult> Login(string email, string password)
         {
-            if (dbContextInfotechLabCase.TblCustomer == null)
+            var user = await dbContextInfotechLabCase.TblUser.Where(
+                x => x.Email == email && x.IsActive == BaseClass.IsActive.Active.GetHashCode()).FirstOrDefaultAsync();
+            if (user == null)
             {
-                return NotFound(new { Message = BaseClass.DataEntryNotFoundForCustomer });
+                return NotFound("(YOK) Kayıt Olunuz");
             }
-            var customerList = await dbContextInfotechLabCase.TblCustomer.ToListAsync();
-            var customer = customerList.Where(
-                x => x.CustomerEmail == email && x.CustomerPassword == password && x.IsActive == BaseClass.IsActive.Active.GetHashCode()).FirstOrDefault();
+
+            var customer = dbContextInfotechLabCase.TblCustomer.Where(x => x.UserId == user.UserId);
             if (customer != null)
             {
-                return Ok(new { Message = BaseClass.LoginSuccess, ResponseData = customer });
+                return Ok(customer);
             }
 
-            if (dbContextInfotechLabCase.TblExpert == null)
-            {
-                return NotFound(new { Message = BaseClass.DataEntryNotFoundForExpert });
-            }
-
-            var expertList = await dbContextInfotechLabCase.TblExpert.ToListAsync();
-            var expert = expertList.Where(
-                x => x.ExpertEmail == email && x.ExpertPassword == password && x.IsActive == BaseClass.IsActive.Active.GetHashCode()).FirstOrDefault();
-
+            var expert = dbContextInfotechLabCase.TblExpert.Where(x => x.UserId == user.UserId);
             if (expert != null)
             {
-                return Ok(new { Message = BaseClass.LoginSuccess, ResponseData = expert });
+                return Ok(expert);
             }
-
-            if (dbContextInfotechLabCase.TblAdmin == null)
-            {
-                return NotFound(new { Message = BaseClass.DataEntryNotFoundForExpert });
-            }
-
-            var adminList = await dbContextInfotechLabCase.TblAdmin.ToListAsync();
-            var admin = adminList.Where(
-                x => x.AdminEmail == email && x.AdminPassword == password && x.IsActive == BaseClass.IsActive.Active.GetHashCode()).FirstOrDefault();
-
-            if (admin!=null)
-            {
-                return Ok(new { Message = BaseClass.LoginSuccess, ResponseData = admin });
-            }
-
-            return Ok(new { Message = BaseClass.LoginFailed });
-
-
+            return Ok(new { ResponseData = user });
         }
     }
 }
