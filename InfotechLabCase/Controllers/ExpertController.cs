@@ -7,10 +7,10 @@ namespace InfotechLabCase.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ExpertsController : Controller
+    public class ExpertController : Controller
     {
         private readonly DbContextInfotechLabCase dbContextInfotechLabCase;
-        public ExpertsController(DbContextInfotechLabCase context)
+        public ExpertController(DbContextInfotechLabCase context)
         {
             this.dbContextInfotechLabCase = context;
         }
@@ -108,7 +108,7 @@ namespace InfotechLabCase.Controllers
             return Ok(new { Message = BaseClass.DeleteProfileSuccess });
         }
 
-        //[HttpGet("city/{cityId}/district/{districtId}")]
+        
         [HttpPost]
         [Route("SearchExpert/")]
         public async Task<ActionResult> SearchExpert(int? cityId, int? districtId, int? serviceCategoryId)

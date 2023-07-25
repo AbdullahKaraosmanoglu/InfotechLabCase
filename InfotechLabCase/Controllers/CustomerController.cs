@@ -7,11 +7,11 @@ namespace InfotechLabCase.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CustomersController : Controller
+    public class CustomerController : Controller
     {
         private readonly DbContextInfotechLabCase dbContextInfotechLabCase;
 
-        public CustomersController(DbContextInfotechLabCase context)
+        public CustomerController(DbContextInfotechLabCase context)
         {
             this.dbContextInfotechLabCase = context;
         }

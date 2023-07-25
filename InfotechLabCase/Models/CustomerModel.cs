@@ -35,7 +35,5 @@ namespace InfotechLabCase.Models
         public DateTime SystemDate { get; set; }
         public DateTime? UpdateSystemDate { get; set; }
         public int IsActive { get; set; }
-        [Required, MaxLength(500)]
-        public string AddressCustomer { get; set; }
     }
 }
