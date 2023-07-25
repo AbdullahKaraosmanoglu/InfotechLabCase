@@ -22,8 +22,8 @@ namespace InfotechLabCase.Controllers
             {
                 return NotFound(new { Message = BaseClass.DataEntryNotFoundForExpert });
             }
-
-            return await dbContextInfotechLabCase.TblExpert.ToListAsync();
+            var experList= await dbContextInfotechLabCase.TblExpert.ToListAsync();
+            return Ok(new {Message="İşlem başarılı",ResponseData=experList});
         }
 
         [HttpGet]
@@ -44,16 +44,18 @@ namespace InfotechLabCase.Controllers
         }
 
         [HttpPost]
+        [Route("CreateExpert/")]
+
         public async Task<ActionResult<CustomerModel>> CreateExpert(ExpertModel expertModel)
         {
 
             dbContextInfotechLabCase.TblExpert.Add(expertModel);
             await dbContextInfotechLabCase.SaveChangesAsync();
 
-            return Ok();
+            return Ok(new { Message = BaseClass.CreateExpertSuccess, ResponseData = expertModel });
         }
 
-        [HttpPut("{expertId}")]
+        [HttpPut("UpdateExpert/{expertId}")]
         public async Task<ActionResult> UpdateExpertByExpertId(int expertId, ExpertModel expertModel)
         {
             if (expertId != expertModel.ExpertId)
@@ -85,7 +87,7 @@ namespace InfotechLabCase.Controllers
             return (dbContextInfotechLabCase.TblExpert?.Any(x => x.ExpertId == expertId)).GetValueOrDefault();
         }
 
-        [HttpDelete("{expertId}")]
+        [HttpDelete("UpdateExpert/{expertId}")]
         public async Task<IActionResult> DeleteExpertByExpertId(int expertId)
         {
             if (dbContextInfotechLabCase.TblExpert == null)
@@ -105,5 +107,57 @@ namespace InfotechLabCase.Controllers
 
             return Ok(new { Message = BaseClass.DeleteProfileSuccess });
         }
+
+        //[HttpGet("city/{cityId}/district/{districtId}")]
+        [HttpPost]
+        [Route("SearchExpert/")]
+        public async Task<ActionResult> SearchExpert(int? cityId, int? districtId, int? serviceCategoryId)
+        {
+            if (cityId != null && districtId != null && serviceCategoryId != null)
+            {
+                var expert = await dbContextInfotechLabCase.TblExpert.Where(
+                                x => x.CityId == cityId && x.DistrictId == districtId && x.ServiceCategoryId == serviceCategoryId).ToListAsync();
+                return Ok(new { Message = "İşlem Başarılı", ResponseData = expert });
+            }
+            else if (cityId != null && districtId != null && serviceCategoryId == null)
+            {
+                var expert = await dbContextInfotechLabCase.TblExpert.Where(
+                    x => x.CityId == cityId && x.DistrictId == districtId).ToListAsync();
+                return Ok(new { Message = "İşlem Başarılı", ResponseData = expert });
+            }
+            else if (cityId != null && districtId == null && serviceCategoryId != null)
+            {
+                var expert = await dbContextInfotechLabCase.TblExpert.Where(
+                    x => x.CityId == cityId && x.ServiceCategoryId == serviceCategoryId).ToListAsync();
+                return Ok(new { Message = "İşlem Başarılı", ResponseData = expert });
+            }
+            else if (cityId == null && districtId != null && serviceCategoryId != null)
+            {
+                var expert = await dbContextInfotechLabCase.TblExpert.Where(
+                    x => x.DistrictId == districtId && x.ServiceCategoryId == serviceCategoryId).ToListAsync();
+                return Ok(new { Message = "İşlem Başarılı", ResponseData = expert });
+            }
+            else if (cityId != null && districtId == null && serviceCategoryId == null)
+            {
+                var expert = await dbContextInfotechLabCase.TblExpert.Where(
+                    x => x.CityId == cityId).ToListAsync();
+                return Ok(new { Message = "İşlem Başarılı", ResponseData = expert });
+            }
+            else if (cityId == null && districtId != null && serviceCategoryId == null)
+            {
+                var expert = await dbContextInfotechLabCase.TblExpert.Where(
+                    x => x.DistrictId == districtId).ToListAsync();
+                return Ok(new { Message = "İşlem Başarılı", ResponseData = expert });
+            }
+            else if (cityId == null && districtId == null && serviceCategoryId != null)
+            {
+                var expert = await dbContextInfotechLabCase.TblExpert.Where(
+                    x => x.ServiceCategoryId == serviceCategoryId).ToListAsync();
+                return Ok(new { Message = "İşlem Başarılı", ResponseData = expert });
+            }
+            return BadRequest(new { Message = BaseClass.BadRequest });
+        }
+
+
     }
 }

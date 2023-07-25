@@ -15,37 +15,33 @@ namespace InfotechLabCase.Controllers
             this.dbContextInfotechLabCase = context;
         }
 
-        //public bool CanCreateServiceArea(AdminModel user)
-        //{
-        //    // "usta" ve "admin" rollerinin Id'lerini varsayılan olarak 1 ve 2 olarak kabul edelim.
-        //    int ustaRoleId = 1;
-        //    int adminRoleId = 3;
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<ServiceCategoryModel>>> ServiceCategories()
+        {
+            if (dbContextInfotechLabCase.TblServiceCategory == null)
+            {
+                return NotFound(new { Message = BaseClass.DataEntryNotFoundForExpert });
+            }
 
-        //    // Kullanıcının rolleri içinde "usta" veya "admin" rolüne sahip olanları seçelim:
-        //    var authorizedRoles = user.Roles.Where(x => x.RoleId == ustaRoleId || x.RoleId == adminRoleId);
-
-        //    //var AuthorizedRoles = user.Roles.Where(role => role.Id == ustaRoleId || role.Id == adminRoleId);
-
-        //    // Eğer kullanıcının "usta" veya "admin" rolü varsa hizmet alanını oluşturabilir.
-        //    // Diğer durumlarda oluşturamaz.
-        //    return authorizedRoles.Any();
-        //}
+            return await dbContextInfotechLabCase.TblServiceCategory.ToListAsync();
+        }
 
         [HttpPost]
+        [Route("CreateService/")]
         public async Task<ActionResult<List<ServiceCategoryModel>>> CreateService(ServiceCategoryModel serviceCategoryModel)
         {
 
-            if (serviceCategoryModel != null /*&& CanCreateServiceArea()*/)
+            if (serviceCategoryModel != null)
             {
                 await dbContextInfotechLabCase.TblServiceCategory.AddAsync(serviceCategoryModel);
                 await dbContextInfotechLabCase.SaveChangesAsync();
-                return Ok(new { Message = "hizmet alanı eklendi", ResponseData = serviceCategoryModel });
+                return Ok(new { Message = BaseClass.CreateServiceSuccess, ResponseData = serviceCategoryModel });
             }
             return BadRequest(new { Message = BaseClass.BadRequest, });
         }
 
-        [HttpPut("{serviceCategoryId}")]
-        public async Task<ActionResult> UpdateServiceByExpertId(int serviceCategoryId, ServiceCategoryModel serviceCategoryModel)
+        [HttpPut("UpdateServiceCategory/{serviceCategoryId}")]
+        public async Task<ActionResult> UpdateServiceByServiceCategoryId(int serviceCategoryId, ServiceCategoryModel serviceCategoryModel)
         {
             if (serviceCategoryId != serviceCategoryModel.ServiceCategoryId)
             {
@@ -61,39 +57,39 @@ namespace InfotechLabCase.Controllers
             {
                 if (!ServiceAvailable(serviceCategoryId))
                 {
-                    return NotFound(new { Message = BaseClass.DataEntryNotFoundForExpertId });
+                    return NotFound(new { Message = BaseClass.DataEntryNotFoundServiceForServiceCategoryId });
                 }
                 else
                 {
                     throw;
                 }
             }
-            return Ok(new { Message = "servis alanı güncellendi" });
+            return Ok(new { Message = BaseClass.UpdateServiceSuccess });
         }
         private bool ServiceAvailable(int serviceCategoryId)
         {
             return (dbContextInfotechLabCase.TblServiceCategory?.Any(x => x.ServiceCategoryId == serviceCategoryId)).GetValueOrDefault();
         }
 
-        [HttpDelete("{serviceCategoryId}")]
+        [HttpDelete("DeleteServiceCategory/{serviceCategoryId}")]
         public async Task<IActionResult> DeleteServiceCategoryByServiceCategoryId(int serviceCategoryId)
         {
-            if (dbContextInfotechLabCase.TblServiceCategory==null)
+            if (dbContextInfotechLabCase.TblServiceCategory == null)
             {
-                return NotFound(new { Message = "Kayıt Bulunamadı"});
+                return NotFound(new { Message = BaseClass.DataEntryNotFoundServiceForServiceCategoryId });
             }
 
             var serviceCategory = await dbContextInfotechLabCase.TblServiceCategory.FindAsync(serviceCategoryId);
 
-            if (serviceCategory==null)
+            if (serviceCategory == null)
             {
-                return NotFound(new { Message = "Kayıt Bulunamadı" });
+                return NotFound(new { Message = BaseClass.DataEntryNotFoundServiceForServiceCategoryId });
             }
 
             dbContextInfotechLabCase.Remove(serviceCategory);
 
             await dbContextInfotechLabCase.SaveChangesAsync();
-            return Ok("Kayıt silindi");
+            return Ok(new {Message=BaseClass.DeleteServiceSuccess});
         }
     }
 }

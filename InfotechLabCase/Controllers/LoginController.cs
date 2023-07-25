@@ -24,13 +24,13 @@ namespace InfotechLabCase.Controllers
                 x => x.Email == userModel.Email && x.IsActive == BaseClass.IsActive.Active.GetHashCode()).FirstOrDefaultAsync();
             if (user != null)
             {
-                return Ok("kullanıcı var");
+                return Ok(new { Message = BaseClass.RegisterFailed });
             }
 
             dbContextInfotechLabCase.Entry(userModel).State = EntityState.Added;
             await dbContextInfotechLabCase.SaveChangesAsync();
 
-            return Ok(new { Message = "kayıt edildi", ResponseData = userModel });
+            return Ok(new { Message = BaseClass.RegisterSuccess, ResponseData = userModel });
 
 
 
@@ -44,21 +44,21 @@ namespace InfotechLabCase.Controllers
                 x => x.Email == email && x.IsActive == BaseClass.IsActive.Active.GetHashCode()).FirstOrDefaultAsync();
             if (user == null)
             {
-                return NotFound("(YOK) Kayıt Olunuz");
+                return NotFound(new {Message=BaseClass.LoginFailed});
             }
 
-            var customer = dbContextInfotechLabCase.TblCustomer.Where(x => x.UserId == user.UserId);
+            var customer =await dbContextInfotechLabCase.TblCustomer.Where(x => x.UserId == user.UserId).FirstOrDefaultAsync();
             if (customer != null)
             {
-                return Ok(customer);
+                return Ok(new { Message = BaseClass.LoginSuccess, ResponseData = customer });
             }
 
-            var expert = dbContextInfotechLabCase.TblExpert.Where(x => x.UserId == user.UserId);
+            var expert = await dbContextInfotechLabCase.TblExpert.Where(x => x.UserId == user.UserId).FirstOrDefaultAsync();
             if (expert != null)
             {
-                return Ok(expert);
+                return Ok(new { Message = BaseClass.LoginSuccess, ResponseData = expert });
             }
-            return Ok(new { ResponseData = user });
+            return Ok(new {Message=BaseClass.RegisterSuccess, ResponseData = user });
         }
     }
 }

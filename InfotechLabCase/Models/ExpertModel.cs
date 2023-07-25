@@ -12,6 +12,12 @@ namespace InfotechLabCase.Models
         [Required]
         public int RoleId { get; set; }
         [Required]
+        public int CityId { get; set; }
+        [Required]
+        public int DistrictId { get; set; }
+        [Required]
+        public int NeighbourhoodId { get; set; }
+        [Required]
         public int ServiceCategoryId { get; set; }
         [Required]
         [MaxLength(50)]
@@ -20,20 +26,13 @@ namespace InfotechLabCase.Models
         [MaxLength(50)]
         public string ExpertSurname { get; set; }
         [Required]
-        [MaxLength(50)]
-        public string ExpertCity { get; set; }
-        [Required]
-        [MaxLength(50)]
-        public string ExpertDistrict { get; set; }
-        [Required]
-        [MaxLength(50)]
-        public string ExpertNeighbourhood { get; set; }
-        [Required]
         [MaxLength(10)]
         public string ExpertPhone { get; set; }
         [Required]
         public DateTime SystemDate { get; set; }
         public DateTime? UpdateSystemDate { get; set; }
         public int IsActive { get; set; }
+        [Required, MaxLength(500)]
+        public string AddressExpert { get; set; }
     }
 }

@@ -14,20 +14,17 @@ namespace InfotechLabCase.Models
         [Required]
         public int RoleId { get; set; }
         [Required]
+        public int CityId { get; set; }
+        [Required]
+        public int DistrictId { get; set; }
+        [Required]
+        public int NeighbourhoodId { get; set; }
+        [Required]
         [MaxLength(50)]
         public string CustomerName { get; set; }
         [Required]
         [MaxLength(50)]
         public string CustomerSurname { get; set; }
-        [Required]
-        [MaxLength(50)]
-        public string CustomerCity { get; set; }
-        [Required]
-        [MaxLength(50)]
-        public string CustomerDistrict { get; set; }
-        [Required]
-        [MaxLength(50)]
-        public string CustomerNeighbourhood { get; set; }
         [Required]
         [MaxLength(10)]
         public string CustomerPhone { get; set; }
@@ -38,5 +35,7 @@ namespace InfotechLabCase.Models
         public DateTime SystemDate { get; set; }
         public DateTime? UpdateSystemDate { get; set; }
         public int IsActive { get; set; }
+        [Required, MaxLength(500)]
+        public string AddressCustomer { get; set; }
     }
 }

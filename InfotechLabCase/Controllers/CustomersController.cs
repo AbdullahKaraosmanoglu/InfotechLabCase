@@ -45,17 +45,19 @@ namespace InfotechLabCase.Controllers
         }
 
         [HttpPost]
+        [Route("CreateCustomer/")]
         public async Task<ActionResult<CustomerModel>> CreateCustomer([FromBody] CustomerModel customerModel)
         {
 
             dbContextInfotechLabCase.TblCustomer.Add(customerModel);
             await dbContextInfotechLabCase.SaveChangesAsync();
 
-            return Ok(customerModel);
+            return Ok(new { Message = BaseClass.CreateCustomerSuccess, customerModel });
 
         }
 
         [HttpPut]
+        [Route("UpdateCustomer/")]
         public async Task<IActionResult> UpdateCustomerByCustomerId(int customerId, CustomerModel customerModel)
         {
             if (customerId != customerModel.CustomerId)
