@@ -22,8 +22,8 @@ namespace InfotechLabCase.Controllers
             {
                 return NotFound(new { Message = BaseClass.DataEntryNotFoundForExpert });
             }
-
-            return await dbContextInfotechLabCase.TblNeighbourhood.ToListAsync();
+            var neighbourhoodList= await dbContextInfotechLabCase.TblNeighbourhood.ToListAsync();
+            return Ok(new {Message=BaseClass.GetNeighbourdhoods,ResponseData=neighbourhoodList});
         }
 
         [HttpPost]
@@ -34,7 +34,7 @@ namespace InfotechLabCase.Controllers
             {
                 await dbContextInfotechLabCase.TblNeighbourhood.AddAsync(neighbourhoodModel);
                 await dbContextInfotechLabCase.SaveChangesAsync();
-                return Ok(new { Message = "mahalle eklendi", ResponseData = neighbourhoodModel });
+                return Ok(new { Message = BaseClass.CreateNeighbourhood, ResponseData = neighbourhoodModel });
             }
             return BadRequest(new { Message = BaseClass.BadRequest });
         }

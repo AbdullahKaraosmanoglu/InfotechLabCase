@@ -20,10 +20,11 @@ namespace InfotechLabCase.Controllers
         {
             if (dbContextInfotechLabCase.TblDistrict == null)
             {
-                return NotFound(new { Message = BaseClass.DataEntryNotFoundForExpert });
+                return NotFound(new { Message = BaseClass.GetDistrictsFailed });
             }
+            var districtList = await dbContextInfotechLabCase.TblDistrict.ToListAsync();
 
-            return await dbContextInfotechLabCase.TblDistrict.ToListAsync();
+            return Ok(new { Message = BaseClass.GetDistricts, ResponseData = districtList });
         }
 
         [HttpPost]

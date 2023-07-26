@@ -24,7 +24,9 @@ namespace InfotechLabCase.Controllers
                 return NotFound(new { Message = BaseClass.DataEntryNotFoundForCustomer });
             }
 
-            return await dbContextInfotechLabCase.TblCustomer.ToListAsync();
+            var customerList = await dbContextInfotechLabCase.TblCustomer.ToListAsync();
+
+            return Ok(new {Message=BaseClass.GetCustomers,ResponseData=customerList});
         }
 
         [HttpGet]

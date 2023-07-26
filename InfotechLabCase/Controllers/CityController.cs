@@ -14,6 +14,7 @@ namespace InfotechLabCase.Controllers
         {
             this.dbContextInfotechLabCase = context;
         }
+
         /// <summary>
         /// Bütün Şehirleri Dönen Api
         /// </summary>
@@ -25,10 +26,11 @@ namespace InfotechLabCase.Controllers
             {
                 return NotFound(new { Message = BaseClass.DataEntryNotFoundForExpert });
             }
-            var city = await dbContextInfotechLabCase.TblCity.ToListAsync();
+            var cityList = await dbContextInfotechLabCase.TblCity.ToListAsync();
 
-            return await dbContextInfotechLabCase.TblCity.ToListAsync();
+            return Ok(new {Message=BaseClass.GetCities,ResponseData=cityList});
         }
+
         /// <summary>
         /// 
         /// </summary>

@@ -14,7 +14,7 @@ namespace InfotechLabCase.Controllers
         {
             this.dbContextInfotechLabCase = context;
         }
-        //[HttpGet("city/{cityId}/district/{districtId}")]
+        
         [HttpPost]
         [Route("CreateExpertComment/")]
         public async Task<ActionResult<List<ExpertCommentModel>>> CreateExpertComment(ExpertCommentModel expertCommentModel)
@@ -23,13 +23,13 @@ namespace InfotechLabCase.Controllers
             {
                 await dbContextInfotechLabCase.TblExpertComment.AddAsync(expertCommentModel);
                 await dbContextInfotechLabCase.SaveChangesAsync();
-                return Ok(new { Message = BaseClass.SendingOffer, ResponseData = expertCommentModel });
+                return Ok(new { Message = BaseClass.CreateCommentForExpert, ResponseData = expertCommentModel });
             }
             return BadRequest(new { Message = BaseClass.BadRequest });
         }
         [HttpGet]
         [Route("GetExpertComment/{expertId:int}")]
-        public async Task<ActionResult<ExpertCommentModel>> GetExpertCommentByExpertId(int expertId)
+        public async Task<ActionResult<List<ExpertCommentModel>>> GetExpertCommentByExpertId(int expertId)
         {
 
             if (dbContextInfotechLabCase.TblExpertComment == null)
@@ -43,12 +43,12 @@ namespace InfotechLabCase.Controllers
             {
                 return NotFound(new { Message = BaseClass.DataEntryNotFoundForExpertId });
             }
-            return Ok(new { Message = BaseClass.ProfileFound, ResponseData = commentList });
+            return Ok(new { Message = BaseClass.GetExpertComment, ResponseData = commentList });
         }
 
         [HttpGet]
-        [Route("GetCustomerComment/{customerId:int}")]
-        public async Task<ActionResult<ExpertCommentModel>> GetCustomerCommentByCustomerId(int customerId)
+        [Route("GetExpertCommentForCustomers/{customerId:int}")]
+        public async Task<ActionResult<List<ExpertCommentModel>>> GetExpertCommentByCustomerId(int customerId)
         {
 
             if (dbContextInfotechLabCase.TblExpertComment == null)
@@ -62,7 +62,7 @@ namespace InfotechLabCase.Controllers
             {
                 return NotFound(new { Message = BaseClass.DataEntryNotFoundForExpertId });
             }
-            return Ok(new { Message = BaseClass.ProfileFound, ResponseData = commentList });
+            return Ok(new { Message = BaseClass.GetExpertComment, ResponseData = commentList });
         }
     }
 }

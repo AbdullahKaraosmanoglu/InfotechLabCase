@@ -53,7 +53,7 @@ namespace InfotechLabCase.Controllers
         }
 
         [HttpPut("UpdateStatus/{offerId}")]
-        public async Task<ActionResult> UpdateExpertByExpertId(int offerId, OfferModel offerModel)
+        public async Task<ActionResult> UpdateStatusByExpertId(int offerId, OfferModel offerModel)
         {
             if (offerId != offerModel.OfferId)
             {
@@ -69,14 +69,14 @@ namespace InfotechLabCase.Controllers
             {
                 if (!OfferAvailable(offerId))
                 {
-                    return NotFound(new { Message = BaseClass.DataEntryNotFoundForExpertId });
+                    return NotFound(new { Message = BaseClass.UpdateOfferStatusFailedByOfferId });
                 }
                 else
                 {
                     throw;
                 }
             }
-            return Ok(new { Message = BaseClass.UpdateProfileSuccess });
+            return Ok(new { Message = BaseClass.UpdateOfferStatus });
         }
 
         private bool OfferAvailable(int offerId)
@@ -97,7 +97,7 @@ namespace InfotechLabCase.Controllers
             offer.OfferStatus = offerStatus;
             dbContextInfotechLabCase.Entry(offer).State = EntityState.Modified;
             await dbContextInfotechLabCase.SaveChangesAsync();
-            return Ok(offer);
+            return Ok(new { Message = BaseClass.UpdateOfferSuccess, ResponseData = offer });
         }
 
         [HttpDelete]
@@ -112,20 +112,20 @@ namespace InfotechLabCase.Controllers
             dbContextInfotechLabCase.Entry(offer).State = EntityState.Modified;
             offer.IsActive = BaseClass.IsActive.Passive.GetHashCode();
             await dbContextInfotechLabCase.SaveChangesAsync();
-            return Ok(offer);
+            return Ok(new { Message = BaseClass.DeleteOfferSuccess, ResponseData = offer });
         }
 
         [HttpGet]
         [Route("ExpertCompletedWork/{expertID}")]
         public async Task<ActionResult<List<OfferModel>>> ExpertCompletedWork(int expertID)
         {
-            var offers = await dbContextInfotechLabCase.TblOffer.Where(x => x.ExpertId == expertID&&x.OfferStatus==BaseClass.OfferStatus.Completed.GetHashCode()).ToListAsync();
+            var offers = await dbContextInfotechLabCase.TblOffer.Where(x => x.ExpertId == expertID && x.OfferStatus == BaseClass.OfferStatus.Completed.GetHashCode()).ToListAsync();
             var comletedWorkCount = offers.Count;
             if (offers.Count == 0)
             {
                 return NotFound(new { Message = BaseClass.DataEntryNotFoundOfferWithExpertId });
             }
-            return Ok(new { Message = BaseClass.GetOffersForExpertId, ResponseData = comletedWorkCount });
+            return Ok(new { Message = BaseClass.ExpertCompletedWork, ResponseData = comletedWorkCount });
         }
     }
 }

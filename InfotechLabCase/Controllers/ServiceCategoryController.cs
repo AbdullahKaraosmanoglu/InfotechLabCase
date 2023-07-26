@@ -16,14 +16,15 @@ namespace InfotechLabCase.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ServiceCategoryModel>>> ServiceCategories()
+        public async Task<ActionResult<IEnumerable<ServiceCategoryModel>>> GetServiceCategories()
         {
             if (dbContextInfotechLabCase.TblServiceCategory == null)
             {
                 return NotFound(new { Message = BaseClass.DataEntryNotFoundForExpert });
             }
+            var serviceList = await dbContextInfotechLabCase.TblServiceCategory.ToListAsync();
 
-            return await dbContextInfotechLabCase.TblServiceCategory.ToListAsync();
+            return Ok(new {Message=BaseClass.GetServicesSuccess,ResponseData=serviceList});
         }
 
         [HttpPost]

@@ -22,8 +22,8 @@ namespace InfotechLabCase.Controllers
             {
                 return NotFound(new { Message = BaseClass.DataEntryNotFoundForExpert });
             }
-            var experList= await dbContextInfotechLabCase.TblExpert.ToListAsync();
-            return Ok(new {Message="İşlem başarılı",ResponseData=experList});
+            var experList = await dbContextInfotechLabCase.TblExpert.ToListAsync();
+            return Ok(new { Message = BaseClass.GetExperts, ResponseData = experList });
         }
 
         [HttpGet]
@@ -108,7 +108,7 @@ namespace InfotechLabCase.Controllers
             return Ok(new { Message = BaseClass.DeleteProfileSuccess });
         }
 
-        
+
         [HttpPost]
         [Route("SearchExpert/")]
         public async Task<ActionResult> SearchExpert(int? cityId, int? districtId, int? serviceCategoryId)
@@ -117,43 +117,43 @@ namespace InfotechLabCase.Controllers
             {
                 var expert = await dbContextInfotechLabCase.TblExpert.Where(
                                 x => x.CityId == cityId && x.DistrictId == districtId && x.ServiceCategoryId == serviceCategoryId).ToListAsync();
-                return Ok(new { Message = "İşlem Başarılı", ResponseData = expert });
+                return Ok(new { Message = BaseClass.SearchExpert, ResponseData = expert });
             }
             else if (cityId != null && districtId != null && serviceCategoryId == null)
             {
                 var expert = await dbContextInfotechLabCase.TblExpert.Where(
                     x => x.CityId == cityId && x.DistrictId == districtId).ToListAsync();
-                return Ok(new { Message = "İşlem Başarılı", ResponseData = expert });
+                return Ok(new { Message = BaseClass.SearchExpert, ResponseData = expert });
             }
             else if (cityId != null && districtId == null && serviceCategoryId != null)
             {
                 var expert = await dbContextInfotechLabCase.TblExpert.Where(
                     x => x.CityId == cityId && x.ServiceCategoryId == serviceCategoryId).ToListAsync();
-                return Ok(new { Message = "İşlem Başarılı", ResponseData = expert });
+                return Ok(new { Message = BaseClass.SearchExpert, ResponseData = expert });
             }
             else if (cityId == null && districtId != null && serviceCategoryId != null)
             {
                 var expert = await dbContextInfotechLabCase.TblExpert.Where(
                     x => x.DistrictId == districtId && x.ServiceCategoryId == serviceCategoryId).ToListAsync();
-                return Ok(new { Message = "İşlem Başarılı", ResponseData = expert });
+                return Ok(new { Message = BaseClass.SearchExpert, ResponseData = expert });
             }
             else if (cityId != null && districtId == null && serviceCategoryId == null)
             {
                 var expert = await dbContextInfotechLabCase.TblExpert.Where(
                     x => x.CityId == cityId).ToListAsync();
-                return Ok(new { Message = "İşlem Başarılı", ResponseData = expert });
+                return Ok(new { Message = BaseClass.SearchExpert, ResponseData = expert });
             }
             else if (cityId == null && districtId != null && serviceCategoryId == null)
             {
                 var expert = await dbContextInfotechLabCase.TblExpert.Where(
                     x => x.DistrictId == districtId).ToListAsync();
-                return Ok(new { Message = "İşlem Başarılı", ResponseData = expert });
+                return Ok(new { Message = BaseClass.SearchExpert, ResponseData = expert });
             }
             else if (cityId == null && districtId == null && serviceCategoryId != null)
             {
                 var expert = await dbContextInfotechLabCase.TblExpert.Where(
                     x => x.ServiceCategoryId == serviceCategoryId).ToListAsync();
-                return Ok(new { Message = "İşlem Başarılı", ResponseData = expert });
+                return Ok(new { Message = BaseClass.SearchExpert, ResponseData = expert });
             }
             return BadRequest(new { Message = BaseClass.BadRequest });
         }
