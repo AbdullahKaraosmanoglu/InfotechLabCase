@@ -15,6 +15,10 @@ namespace InfotechLabCase.Controllers
             this.dbContextInfotechLabCase = context;
         }
 
+        /// <summary>
+        /// Ustaları Getiren Api
+        /// </summary>
+        /// <returns>experList</returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ExpertModel>>> GetExperts()
         {
@@ -26,6 +30,11 @@ namespace InfotechLabCase.Controllers
             return Ok(new { Message = BaseClass.GetExperts, ResponseData = experList });
         }
 
+        /// <summary>
+        /// Belirli ExpertId'ye Göre Usta Getiren Api
+        /// </summary>
+        /// <param name="expertId"></param>
+        /// <returns>expert</returns>
         [HttpGet]
         [Route("{expertId:int}")]
         public async Task<ActionResult<ExpertModel>> GetExpertByExpertId(int expertId)
@@ -43,9 +52,13 @@ namespace InfotechLabCase.Controllers
             return Ok(new { Message = BaseClass.ProfileFound, ResponseData = expert });
         }
 
+        /// <summary>
+        /// Yeni Bir Usta Profili Oluşturan Api
+        /// </summary>
+        /// <param name="expertModel"></param>
+        /// <returns>expertModel</returns>
         [HttpPost]
         [Route("CreateExpert/")]
-
         public async Task<ActionResult<CustomerModel>> CreateExpert(ExpertModel expertModel)
         {
 
@@ -54,7 +67,12 @@ namespace InfotechLabCase.Controllers
 
             return Ok(new { Message = BaseClass.CreateExpertSuccess, ResponseData = expertModel });
         }
-
+        /// <summary>
+        /// Usta Profilini Güncelleyen Api
+        /// </summary>
+        /// <param name="expertId"></param>
+        /// <param name="expertModel"></param>
+        /// <returns></returns>
         [HttpPut("UpdateExpert/{expertId}")]
         public async Task<ActionResult> UpdateExpertByExpertId(int expertId, ExpertModel expertModel)
         {
@@ -81,13 +99,22 @@ namespace InfotechLabCase.Controllers
             }
             return Ok(new { Message = BaseClass.UpdateProfileSuccess });
         }
-
+        /// <summary>
+        /// Ustanın Mevcut Olup ve ya Aktif Olup Olmadığını Kontrol Eden Bool Tipinde Method
+        /// </summary>
+        /// <param name="expertId"></param>
+        /// <returns></returns>
         private bool ExpertAvailable(int expertId)
         {
             return (dbContextInfotechLabCase.TblExpert?.Any(x => x.ExpertId == expertId)).GetValueOrDefault();
         }
 
-        [HttpDelete("UpdateExpert/{expertId}")]
+        /// <summary>
+        /// Ustanın Profilini Aktiften Pasife Çeken Api
+        /// </summary>
+        /// <param name="expertId"></param>
+        /// <returns></returns>
+        [HttpDelete("DeleteExpert/{expertId}")]
         public async Task<IActionResult> DeleteExpertByExpertId(int expertId)
         {
             if (dbContextInfotechLabCase.TblExpert == null)
@@ -108,7 +135,13 @@ namespace InfotechLabCase.Controllers
             return Ok(new { Message = BaseClass.DeleteProfileSuccess });
         }
 
-
+        /// <summary>
+        /// Anasayfada Arama Çubuğunda Search Yapmayı Sağlayan Api
+        /// </summary>
+        /// <param name="cityId"></param>
+        /// <param name="districtId"></param>
+        /// <param name="serviceCategoryId"></param>
+        /// <returns>expert</returns>
         [HttpPost]
         [Route("SearchExpert/")]
         public async Task<ActionResult> SearchExpert(int? cityId, int? districtId, int? serviceCategoryId)

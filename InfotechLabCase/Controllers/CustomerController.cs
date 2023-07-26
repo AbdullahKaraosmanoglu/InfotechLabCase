@@ -16,6 +16,10 @@ namespace InfotechLabCase.Controllers
             this.dbContextInfotechLabCase = context;
         }
 
+        /// <summary>
+        /// Bütün Müşterileri Getiren Api
+        /// </summary>
+        /// <returns>customerList</returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CustomerModel>>> GetCustomers()
         {
@@ -26,9 +30,14 @@ namespace InfotechLabCase.Controllers
 
             var customerList = await dbContextInfotechLabCase.TblCustomer.ToListAsync();
 
-            return Ok(new {Message=BaseClass.GetCustomers,ResponseData=customerList});
+            return Ok(new { Message = BaseClass.GetCustomers, ResponseData = customerList });
         }
 
+        /// <summary>
+        /// CustomerId'ye Göre Müşteri Getiren Api
+        /// </summary>
+        /// <param name="customerId"></param>
+        /// <returns>customer</returns>
         [HttpGet]
         [Route("{customerId:int}")]
         public async Task<ActionResult<CustomerModel>> GetCustomerByCustomerId(int customerId)
@@ -46,6 +55,11 @@ namespace InfotechLabCase.Controllers
             return Ok(new { Message = BaseClass.ProfileFound, ResponseData = customer });
         }
 
+        /// <summary>
+        /// Müşteri Oluşturan Api
+        /// </summary>
+        /// <param name="customerModel"></param>
+        /// <returns>customerModel</returns>
         [HttpPost]
         [Route("CreateCustomer/")]
         public async Task<ActionResult<CustomerModel>> CreateCustomer([FromBody] CustomerModel customerModel)
@@ -58,6 +72,12 @@ namespace InfotechLabCase.Controllers
 
         }
 
+        /// <summary>
+        /// Müşterinin Profil Bilgilerini Güncellemesini Sağlayan Api
+        /// </summary>
+        /// <param name="customerId"></param>
+        /// <param name="customerModel"></param>
+        /// <returns></returns>
         [HttpPut]
         [Route("UpdateCustomer/")]
         public async Task<IActionResult> UpdateCustomerByCustomerId(int customerId, CustomerModel customerModel)
@@ -86,11 +106,21 @@ namespace InfotechLabCase.Controllers
             return Ok(new { Message = BaseClass.UpdateProfileSuccess });
         }
 
+        /// <summary>
+        /// Müşterinin Mevcut Olup ve ya Aktif Olup Olmadığını Kontrol Eden Bool Tipinde Method
+        /// </summary>
+        /// <param name="customerId"></param>
+        /// <returns>true or false</returns>
         private bool CustomerAvailable(int customerId)
         {
             return (dbContextInfotechLabCase.TblCustomer?.Any(x => x.CustomerId == customerId)).GetValueOrDefault();
         }
 
+        /// <summary>
+        /// Müşterinin Profilini Aktiften Pasife Çeken Api
+        /// </summary>
+        /// <param name="customerId"></param>
+        /// <returns></returns>
         [HttpDelete("{customerId}")]
         public async Task<IActionResult> DeleteCustomerByCustomerId(int customerId)
         {

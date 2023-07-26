@@ -15,6 +15,10 @@ namespace InfotechLabCase.Controllers
             this.dbContextInfotechLabCase = context;
         }
 
+        /// <summary>
+        /// İlçeleri Getiren Api
+        /// </summary>
+        /// <returns>districtList</returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DistrictModel>>> GetDistricts()
         {
@@ -27,6 +31,11 @@ namespace InfotechLabCase.Controllers
             return Ok(new { Message = BaseClass.GetDistricts, ResponseData = districtList });
         }
 
+        /// <summary>
+        /// İlçe Oluşturan Api
+        /// </summary>
+        /// <param name="districtModel"></param>
+        /// <returns>districtModel</returns>
         [HttpPost]
         [Route("CreateDistrict/")]
         public async Task<ActionResult<List<DistrictModel>>> CreateDistrict(DistrictModel districtModel)

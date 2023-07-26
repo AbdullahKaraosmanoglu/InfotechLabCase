@@ -15,6 +15,11 @@ namespace InfotechLabCase.Controllers
             this.dbContextInfotechLabCase = context;
         }
 
+        /// <summary>
+        /// Yeni Bir Teklif Formu Oluşturan Api
+        /// </summary>
+        /// <param name="offerModel"></param>
+        /// <returns>offerModel</returns>
         [HttpPost]
         [Route("CreateOffer/")]
         public async Task<ActionResult<List<OfferModel>>> CreateOffer(OfferModel offerModel)
@@ -28,6 +33,11 @@ namespace InfotechLabCase.Controllers
             return BadRequest(new { Message = BaseClass.BadRequest });
         }
 
+        /// <summary>
+        /// Müşteririnin Gönderdiği Teklif Formlarını Getirir
+        /// </summary>
+        /// <param name="customerID"></param>
+        /// <returns>offers</returns>
         [HttpGet]
         [Route("customer/{customerID}")]
         public async Task<ActionResult<List<OfferModel>>> GetOffersByCustomerId(int customerID)
@@ -40,6 +50,11 @@ namespace InfotechLabCase.Controllers
             return Ok(new { Message = BaseClass.GetOffersForCustomerId, ResponseData = offers });
         }
 
+        /// <summary>
+        /// Ustaya Gönderilen Teklif Formlarını Getirir
+        /// </summary>
+        /// <param name="expertID"></param>
+        /// <returns>offers</returns>
         [HttpGet]
         [Route("expert/{expertID}")]
         public async Task<ActionResult<List<OfferModel>>> GetOffersByExpertId(int expertID)
@@ -52,6 +67,12 @@ namespace InfotechLabCase.Controllers
             return Ok(new { Message = BaseClass.GetOffersForExpertId, ResponseData = offers });
         }
 
+        /// <summary>
+        /// Hizmetin Gönderildi, Görüldü ve Tamamlandı Belirtmesini Sağlayan Api
+        /// </summary>
+        /// <param name="offerId"></param>
+        /// <param name="offerModel"></param>
+        /// <returns></returns>
         [HttpPut("UpdateStatus/{offerId}")]
         public async Task<ActionResult> UpdateStatusByExpertId(int offerId, OfferModel offerModel)
         {
@@ -79,11 +100,22 @@ namespace InfotechLabCase.Controllers
             return Ok(new { Message = BaseClass.UpdateOfferStatus });
         }
 
+        /// <summary>
+        /// İstenilen Teklifin Mevcut Olup Olmadığını Kontrol Eden BOOL Method
+        /// </summary>
+        /// <param name="offerId"></param>
+        /// <returns></returns>
         private bool OfferAvailable(int offerId)
         {
             return (dbContextInfotechLabCase.TblOffer?.Any(x => x.OfferId == offerId)).GetValueOrDefault();
         }
 
+        /// <summary>
+        /// Gönderilen Teklifin Güncellenmesini Sağlayan Api 
+        /// </summary>
+        /// <param name="offerId"></param>
+        /// <param name="offerStatus"></param>
+        /// <returns>offer</returns>
         [HttpPut]
         [Route("UpdateOfferStatus/")]
         public async Task<ActionResult<OfferModel>> UpdateOfferStatus(int offerId, int offerStatus)
@@ -100,6 +132,11 @@ namespace InfotechLabCase.Controllers
             return Ok(new { Message = BaseClass.UpdateOfferSuccess, ResponseData = offer });
         }
 
+        /// <summary>
+        /// Teklifin FDurumunu Aktiften Pasife Çeken Api
+        /// </summary>
+        /// <param name="offerId"></param>
+        /// <returns>offer</returns>
         [HttpDelete]
         public async Task<ActionResult<OfferModel>> DeleteOffer(int offerId)
         {
@@ -115,6 +152,11 @@ namespace InfotechLabCase.Controllers
             return Ok(new { Message = BaseClass.DeleteOfferSuccess, ResponseData = offer });
         }
 
+        /// <summary>
+        /// Ustanın İşi Tamamladığını Belirten Api
+        /// </summary>
+        /// <param name="expertID"></param>
+        /// <returns>comletedWorkCount</returns>
         [HttpGet]
         [Route("ExpertCompletedWork/{expertID}")]
         public async Task<ActionResult<List<OfferModel>>> ExpertCompletedWork(int expertID)

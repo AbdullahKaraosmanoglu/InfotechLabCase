@@ -15,6 +15,11 @@ namespace InfotechLabCase.Controllers
             this.dbContextInfotechLabCase = context;
         }
 
+        /// <summary>
+        /// Bütün Hizmet Alanlarını Getiren Api
+        /// </summary>
+        /// <returns>serviceList</returns>
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ServiceCategoryModel>>> GetServiceCategories()
         {
@@ -26,6 +31,12 @@ namespace InfotechLabCase.Controllers
 
             return Ok(new {Message=BaseClass.GetServicesSuccess,ResponseData=serviceList});
         }
+
+        /// <summary>
+        /// Yeni Hizmet Alanı Oluşturan Api
+        /// </summary>
+        /// <param name="serviceCategoryModel"></param>
+        /// <returns>serviceCategoryModel</returns>
 
         [HttpPost]
         [Route("CreateService/")]
@@ -41,6 +52,12 @@ namespace InfotechLabCase.Controllers
             return BadRequest(new { Message = BaseClass.BadRequest, });
         }
 
+        /// <summary>
+        /// Hizmet Alanı Güncelleyen Api
+        /// </summary>
+        /// <param name="serviceCategoryId"></param>
+        /// <param name="serviceCategoryModel"></param>
+        /// <returns></returns>
         [HttpPut("UpdateServiceCategory/{serviceCategoryId}")]
         public async Task<ActionResult> UpdateServiceByServiceCategoryId(int serviceCategoryId, ServiceCategoryModel serviceCategoryModel)
         {
@@ -67,11 +84,22 @@ namespace InfotechLabCase.Controllers
             }
             return Ok(new { Message = BaseClass.UpdateServiceSuccess });
         }
+
+        /// <summary>
+        /// Kayıtlı hizmet ALanı Varmı Yokmu Diye Kontrol Eden BOOL Method
+        /// </summary>
+        /// <param name="serviceCategoryId"></param>
+        /// <returns>true or false</returns>
         private bool ServiceAvailable(int serviceCategoryId)
         {
             return (dbContextInfotechLabCase.TblServiceCategory?.Any(x => x.ServiceCategoryId == serviceCategoryId)).GetValueOrDefault();
         }
 
+        /// <summary>
+        /// Belirli Hizmet Alnını Silen Api
+        /// </summary>
+        /// <param name="serviceCategoryId"></param>
+        /// <returns></returns>
         [HttpDelete("DeleteServiceCategory/{serviceCategoryId}")]
         public async Task<IActionResult> DeleteServiceCategoryByServiceCategoryId(int serviceCategoryId)
         {

@@ -32,10 +32,10 @@ namespace InfotechLabCase.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Şehir Oluşturan Api
         /// </summary>
         /// <param name="cityModel"></param>
-        /// <returns></returns>
+        /// <returns>cityModel</returns>
         [HttpPost]
         [Route("CreateCity/")]
         public async Task<ActionResult<List<CityModel>>> CreateCity(CityModel cityModel)

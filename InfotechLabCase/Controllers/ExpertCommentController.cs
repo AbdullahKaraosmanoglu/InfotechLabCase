@@ -14,7 +14,12 @@ namespace InfotechLabCase.Controllers
         {
             this.dbContextInfotechLabCase = context;
         }
-        
+
+        /// <summary>
+        /// Ustaya Yorum Eklemeyi Sağlayan Api
+        /// </summary>
+        /// <param name="expertCommentModel"></param>
+        /// <returns>expertCommentModel</returns>
         [HttpPost]
         [Route("CreateExpertComment/")]
         public async Task<ActionResult<List<ExpertCommentModel>>> CreateExpertComment(ExpertCommentModel expertCommentModel)
@@ -27,6 +32,12 @@ namespace InfotechLabCase.Controllers
             }
             return BadRequest(new { Message = BaseClass.BadRequest });
         }
+
+        /// <summary>
+        /// Ustanın Kendisine Yapılan Yorumları Görmesini Sağlayan Api
+        /// </summary>
+        /// <param name="expertId"></param>
+        /// <returns>commentList</returns>
         [HttpGet]
         [Route("GetExpertComment/{expertId:int}")]
         public async Task<ActionResult<List<ExpertCommentModel>>> GetExpertCommentByExpertId(int expertId)
@@ -46,6 +57,11 @@ namespace InfotechLabCase.Controllers
             return Ok(new { Message = BaseClass.GetExpertComment, ResponseData = commentList });
         }
 
+        /// <summary>
+        /// Müşterinin Ustalara Yaptığı Yorumları Getitmesini Sağlayan Api
+        /// </summary>
+        /// <param name="customerId"></param>
+        /// <returns>commentList</returns>
         [HttpGet]
         [Route("GetExpertCommentForCustomers/{customerId:int}")]
         public async Task<ActionResult<List<ExpertCommentModel>>> GetExpertCommentByCustomerId(int customerId)
